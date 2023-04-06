@@ -16,7 +16,6 @@
   "postCreateCommand": {
     "pip": "pip install -r requirements.txt",
     "git-safe": "git config --global --add safe.directory /workspaces/cs50-final",
-    "git-user": "git config --global user.email \"11789189+t-bowersox@users.noreply.github.com\" && git config --global user.name \"t-bowersox\"",
     "db": "python db/migrate.py"
   },
   "customizations": {
