@@ -1,0 +1,43 @@
+{% extends 'base.html.jinja' %}
+
+{% block title %}
+Log In
+{% endblock %}
+
+{% block nav %}
+<ul class="navbar-nav ms-auto">
+    {{ nav_item("Register", url_for('auth.register')) }}
+</ul>
+{% endblock %}
+
+{% block main %}
+<section class="mx-auto col-md-4">
+    <header>
+        <h1>Log In</h1>
+    </header>
+
+    {% set messages = get_flashed_messages() %}
+    <form action="{{ url_for('auth.login') }}" method="post" novalidate>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" id="username"
+                class="{{'form-control is-invalid' if 'username' in messages else 'form-control' }}"
+                autocomplete="username" aria-describedby="username-feedback" required>
+            <div class="invalid-feedback" id="username-feedback">
+                {% if 'username' in messages %}
+                No user found with these credentials.
+                {% else %}
+                Username is required.
+                {% endif %}
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" id="password" class="form-control" autocomplete="current-password"
+                aria-describedby="password-feedback" required>
+            <div class="invalid-feedback" id="password-feedback">Password is required.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</section>
+{% endblock %}

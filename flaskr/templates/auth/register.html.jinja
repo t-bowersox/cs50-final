@@ -1,0 +1,52 @@
+{% extends 'base.html.jinja' %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block nav %}
+<ul class="navbar-nav ms-auto">
+    {{ nav_item("Log In", url_for('auth.login')) }}
+</ul>
+{% endblock %}
+
+{% block main %}
+<section class="mx-auto col-md-4">
+    <heading>
+        <h1>Register</h1>
+    </heading>
+
+    {% set messages = get_flashed_messages() %}
+    <form action="{{ url_for('auth.register') }}" method="post" novalidate>
+        <div class="mb-3">
+            <label for="username" class="form-label">Create a username</label>
+            <input type="text" name="username" id="username"
+                class="{{ 'form-control is-invalid' if 'username' in messages else 'form-control' }}"
+                aria-describedby="username-feedback" value="{{ form.get('username', '') }}" required>
+            <div class="invalid-feedback" id="username-feedback">
+                {% if 'username-unavailable' in messages %}
+                Username is unavailable.
+                {% else %}
+                Username is required.
+                {% endif %}
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Create a password</label>
+            <input type="password" name="password" id="password"
+                class="{{ 'form-control is-invalid' if 'password' in messages else 'form-control' }}"
+                aria-describedby="password-feedback" required minlength="8" autocomplete="new-password">
+            <div class="invalid-feedback" id="password-feedback">Password must be at least 8 characters.</div>
+        </div>
+        <div class="mb-3">
+            <label for="password-confirmation" class="form-label">Confirm your password</label>
+            <input type="password" name="password-confirmation" id="password-confirmation"
+                class="{{ 'form-control is-invalid' if 'password-confirmation' in messages else 'form-control' }}"
+                autocomplete="new-password" data-confirmation="password"
+                aria-describedby="password-confirmation-feedback" required>
+            <div class="invalid-feedback" id="password-confirmation-feedback">Passwords must match.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</section>
+{% endblock %}
