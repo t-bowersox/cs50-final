@@ -1,0 +1,49 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Flask: run",
+            "type": "shell",
+            "command": "flask --app flaskr run",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Flask: run in debug mode",
+            "type": "shell",
+            "command": "flask --app flaskr run --debug",
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "Git: set user",
+            "type": "shell",
+            "command": "git config --global user.email \"${input:userEmail}\" && git config --global user.name \"${input:username}\"",
+            "problemMatcher": [],
+        },
+        {
+            "label": "Python: generate hex token",
+            "type": "shell",
+            "command": "python -c 'import secrets; print(secrets.token_hex())'",
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "userEmail",
+            "type": "promptString",
+            "description": "Enter your email address"
+        },
+        {
+            "id": "username",
+            "type": "promptString",
+            "description": "Enter your username"
+        }
+    ]
+}

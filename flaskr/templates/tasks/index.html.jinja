@@ -1,0 +1,19 @@
+{% extends 'base.html.jinja' %}
+
+{% block title %}
+Your Tasks
+{% endblock %}
+
+{% block nav %}
+<ul class="navbar-nav ms-auto">
+    {{ nav_item('Logout', url_for('auth.logout')) }}
+</ul>
+{% endblock %}
+
+{% block main %}
+<section>
+    <header>
+        <h1>Your Tasks</h1>
+    </header>
+</section>
+{% endblock %}

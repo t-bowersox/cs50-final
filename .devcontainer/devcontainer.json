@@ -16,15 +16,18 @@
   "postCreateCommand": {
     "pip": "pip install -r requirements.txt",
     "git-safe": "git config --global --add safe.directory /workspaces/cs50-final",
-    "db": "python db/migrate.py"
+    "db": "flask --app flaskr init-db"
   },
   "customizations": {
     "vscode": {
       "extensions": [
-        "VisualStudioExptTeam.vscodeintellicode",
-        "eamodio.gitlens",
-        "GitHub.vscode-pull-request-github"
-      ]
+		"VisualStudioExptTeam.vscodeintellicode",
+		"eamodio.gitlens",
+		"GitHub.vscode-pull-request-github",
+		"ms-python.vscode-pylance",
+		"ms-python.python",
+		"wholroyd.jinja"
+	]
     }
   }
   // Configure tool-specific properties.
