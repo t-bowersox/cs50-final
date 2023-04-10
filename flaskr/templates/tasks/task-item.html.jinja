@@ -1,0 +1,28 @@
+{% from 'icons.html.jinja' import icon %}
+
+<template id="task-item">
+    <li class="list-group-item d-flex justify-content-between gap-2">
+        <div class="d-flex align-items-center gap-2">
+            <input type="checkbox" class="form-check-input mt-0 flex-shrink-0">
+            <label class="form-check-label"></label>
+        </div>
+        <div class="dropdown d-flex align-items-center">
+            <button class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center justify-content-center"
+                type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">
+                {{ icon('three-dots-vertical', classes=['flex-shrink-0']) }}
+            </button>
+            <ul class="dropdown-menu shadow-sm" role="menu">
+                <li role="menuitem">
+                    <button id="edit-btn" type="button" class="dropdown-item">
+                        Edit
+                    </button>
+                </li>
+                <li role="menuitem">
+                    <button id="delete-btn" type="button" class="dropdown-item">
+                        Delete
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </li>
+</template>

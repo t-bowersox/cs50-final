@@ -1,6 +1,6 @@
 import functools
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    abort, Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from flaskr.db import get_db
@@ -17,8 +17,10 @@ def register():
         db = get_db()
 
         try:
-            db.execute("INSERT INTO users (username, password) VALUES (?, ?)",
-                       [username, generate_password_hash(password)])
+            cursor = db.execute("INSERT INTO users (username, password) VALUES (?, ?)",
+                                [username, generate_password_hash(password)])
+            db.execute("INSERT INTO lists (user_id) VALUES (?)",
+                       [cursor.lastrowid])
             db.commit()
         except db.IntegrityError:
             flash('username')
@@ -97,7 +99,10 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect(url_for('auth.login'))
+            if request.content_type == 'application/json':
+                abort(401)
+            else:
+                return redirect(url_for('auth.login'))
 
         return view(**kwargs)
 

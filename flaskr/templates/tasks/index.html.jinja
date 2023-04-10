@@ -4,16 +4,42 @@
 Your Tasks
 {% endblock %}
 
+{% block scripts %}
+<script type="module">
+    import { TaskList } from '{{ url_for("static", filename="tasks.js") }}'
+
+    customElements.define('task-list', TaskList);
+</script>
+{% endblock %}
+
 {% block nav %}
 <ul class="navbar-nav ms-auto">
     {{ nav_item('Logout', url_for('auth.logout')) }}
 </ul>
 {% endblock %}
 
+{% from 'icons.html.jinja' import icon %}
+
 {% block main %}
-<section>
+<section class="mx-auto col-md-8">
     <header>
         <h1>Your Tasks</h1>
     </header>
+
+    <noscript>
+        <div id="error-alert" class="alert alert-danger d-flex align-items-center" role="alert">
+            {{ icon('exclamation-circle-fill', classes=['flex-shrink-0', 'me-2']) }}
+            This page requires requires JavaScript. Please enable JavaScript in your browser and refresh the page.
+        </div>
+    </noscript>
+
+    <task-list></task-list>
 </section>
+{% endblock %}
+
+{% block bottom %}
+{% include 'tasks/task-list.html.jinja' %}
+{% include 'tasks/task-item.html.jinja' %}
+{% include 'tasks/edit-task-modal.html.jinja' %}
+{% include 'tasks/delete-task-modal.html.jinja' %}
 {% endblock %}

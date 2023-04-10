@@ -42,8 +42,7 @@ def init_db_command():
         return
 
     # Connect to the database
-    db_connection = get_db()
-    db = db_connection.cursor()
+    db = get_db()
 
     # Create the migrations table if it doesn't exist
     try:
@@ -82,6 +81,7 @@ def init_db_command():
                 db.execute(sql)
                 db.execute(
                     'INSERT INTO migrations (name) VALUES (?)', [migration])
+                db.commit()
             except sqlite3.DatabaseError as err:
                 click.echo('[failed]')
                 close_db()
@@ -129,3 +129,12 @@ def init_app(app: Flask):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
     app.cli.add_command(create_migration_command)
+
+
+def row_to_dict(row: sqlite3.Row):
+    result = {}
+
+    for key in row.keys():
+        result[key] = row[key]
+
+    return result
