@@ -15,21 +15,23 @@
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": {
     "pip": "pip install -r requirements.txt",
+  },
+  "postStartCommand": {
     "git-safe": "git config --global --add safe.directory /workspaces/cs50-final",
     "db": "flask --app flaskr init-db"
   },
   "customizations": {
     "vscode": {
       "extensions": [
-		"VisualStudioExptTeam.vscodeintellicode",
-		"eamodio.gitlens",
-		"GitHub.vscode-pull-request-github",
-		"ms-python.vscode-pylance",
-		"ms-python.python",
-		"wholroyd.jinja"
-	]
+        "VisualStudioExptTeam.vscodeintellicode",
+        "eamodio.gitlens",
+        "GitHub.vscode-pull-request-github",
+        "ms-python.vscode-pylance",
+        "ms-python.python",
+        "samuelcolvin.jinjahtml"
+      ]
     }
-  }
+  },
   // Configure tool-specific properties.
   // "customizations": {},
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.

@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from flask import Flask, g
+from flask import Flask, jsonify
 from . import db, auth, tasks
 
 
@@ -30,10 +30,32 @@ def create_app(test_config=None):
     db.init_app(app)
     app.register_blueprint(auth.bp)
     app.register_blueprint(tasks.bp)
+    set_error_handlers(app)
+    add_template_globals(app)
 
+    return app
+
+
+def set_error_handlers(app: Flask):
+    @app.errorhandler(400)
+    def bad_request(err):
+        return jsonify('Bad Request'), 400
+
+    @app.errorhandler(401)
+    def unauthorized(err):
+        return jsonify('Unauthorized'), 401
+
+    @app.errorhandler(404)
+    def not_found(err):
+        return jsonify('Not Found'), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(err):
+        return jsonify('Internal Server Error'), 500
+
+
+def add_template_globals(app: Flask):
     @app.template_global()
     def current_year():
         """Return the current year for the copyright statement."""
         return datetime.today().year
-
-    return app
