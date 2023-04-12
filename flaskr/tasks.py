@@ -51,10 +51,18 @@ def task(id=None):
         data = request.get_json()
         description = data['description']
         completed = int(data['completed'])
-        completed_on = datetime.today() if completed else None
+        completed_on = data['completedOn']
         updated_on = datetime.today()
 
         try:
+            current = db.execute(
+                'SELECT completed FROM tasks WHERE id = ?', [data['id']]).fetchone()
+
+            if completed and current['completed'] == 0:
+                completed_on = datetime.today()
+            elif not completed and current['completed'] == 1:
+                completed_on = None
+
             cursor = db.execute(
                 'UPDATE tasks SET description = ?, completed = ?, completed_on = ?, updated_on = ? WHERE id = ?',
                 [description, completed, completed_on, updated_on, id])
@@ -98,3 +106,29 @@ def tasks():
         abort(500)
     else:
         return tasks
+
+
+@bp.get('/history')
+@auth.login_required
+def history():
+    page = request.args.get('p', 0)
+    tasks = []  # type: list[dict]
+    limit = 10
+    db = get_db()
+
+    if request.is_json:
+        rows = db.execute(
+            'SELECT COUNT(*) AS count FROM tasks WHERE list_id = ? AND completed = 1', [session['list_id']]).fetchone()
+
+        count = rows['count']
+
+        rows = db.execute(
+            'SELECT * FROM tasks WHERE list_id = ? AND completed = 1 ORDER BY completed_on DESC LIMIT ? OFFSET ?',
+            [session['list_id'], limit, limit * int(page)]).fetchall()
+
+        for row in rows:
+            tasks.append(row_to_dict(row))
+
+        return {'tasks': tasks, 'count': count, 'pageSize': limit}
+    else:
+        return render_template('history/index.html.jinja')

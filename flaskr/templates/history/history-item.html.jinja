@@ -1,0 +1,35 @@
+<template id="history-item">
+    <tr>
+        <td>
+            <span class="task-description"></span>
+            <div class="alt-completed-on small text-secondary d-block d-sm-none"></div>
+        </td>
+        <td class="task-completed-on d-none d-sm-table-cell"></td>
+        <td>
+            <div class="dropdown d-flex align-items-center">
+                <button
+                    class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center justify-content-center"
+                    type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Options">
+                    {{ icon('three-dots-vertical', classes=['flex-shrink-0']) }}
+                </button>
+                <ul class="dropdown-menu shadow-sm" role="menu">
+                    <li role="menuitem">
+                        <button id="incomplete-btn" type="button" class="dropdown-item">
+                            Mark incomplete
+                        </button>
+                    </li>
+                    <li role="menuitem">
+                        <button id="edit-btn" type="button" class="dropdown-item">
+                            Edit
+                        </button>
+                    </li>
+                    <li role="menuitem">
+                        <button id="delete-btn" type="button" class="dropdown-item">
+                            Delete
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+</template>

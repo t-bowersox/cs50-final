@@ -22,6 +22,18 @@
             }
         },
         {
+            "label": "Flask: create new migration",
+            "type": "shell",
+            "command": "flask --app flaskr create-migration \"${input:migrationName}\"",
+            "problemMatcher": []
+        },
+        {
+            "label": "Flask: run migrations",
+            "type": "shell",
+            "command": "flask --app flaskr init-db",
+            "problemMatcher": []
+        },
+        {
             "label": "Git: set user",
             "type": "shell",
             "command": "git config --global user.email \"${input:userEmail}\" && git config --global user.name \"${input:username}\"",
@@ -44,6 +56,11 @@
             "id": "username",
             "type": "promptString",
             "description": "Enter your username"
+        },
+        {
+            "id": "migrationName",
+            "type": "promptString",
+            "description": "Enter a name for the migration"
         }
     ]
 }
