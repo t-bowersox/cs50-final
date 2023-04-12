@@ -400,7 +400,7 @@ export class TaskList extends HTMLElement {
     }
 }
 
-class Task {
+export class Task {
     /**
      * @param {Object} taskData
      * @param {number} taskData.id
@@ -432,5 +432,13 @@ class Task {
 
         /** @type {Date} */
         this.updatedOn = new Date(taskData.updated_on);
+    }
+
+    get localeCompletedDate() {
+        const localizedDate = new Date(this.completedOn.getTime() - (this.completedOn.getTimezoneOffset() * 60 * 1000));
+
+        return this.completedOn
+            ? new Intl.DateTimeFormat().format(localizedDate)
+            : null;
     }
 }

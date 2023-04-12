@@ -99,7 +99,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            if request.content_type == 'application/json':
+            if request.is_json:
                 abort(401)
             else:
                 return redirect(url_for('auth.login'))

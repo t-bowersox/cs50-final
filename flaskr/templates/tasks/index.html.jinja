@@ -13,6 +13,10 @@ Your Tasks
 {% endblock %}
 
 {% block nav %}
+<ul class="navbar-nav">
+    {{ nav_item('History', url_for('tasks.history')) }}
+</ul>
+
 <ul class="navbar-nav ms-auto">
     {{ nav_item('Logout', url_for('auth.logout')) }}
 </ul>
@@ -26,12 +30,7 @@ Your Tasks
         <h1>Your Tasks</h1>
     </header>
 
-    <noscript>
-        <div id="error-alert" class="alert alert-danger d-flex align-items-center" role="alert">
-            {{ icon('exclamation-circle-fill', classes=['flex-shrink-0', 'me-2']) }}
-            This page requires requires JavaScript. Please enable JavaScript in your browser and refresh the page.
-        </div>
-    </noscript>
+    {% include "noscript.html.jinja" %}
 
     <task-list></task-list>
 </section>

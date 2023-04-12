@@ -1,0 +1,46 @@
+{% from 'icons.html.jinja' import icon %}
+
+{% extends 'base.html.jinja' %}
+
+{% block title %}
+History
+{% endblock %}
+
+{% block scripts %}
+<script type="module">
+    import { TaskHistory } from '{{ url_for("static", filename="history.js") }}'
+
+    customElements.define('task-history', TaskHistory);
+</script>
+{% endblock %}
+
+{% block nav %}
+<ul class="navbar-nav">
+    {{ nav_item('History', url_for('tasks.history'), active=True) }}
+</ul>
+
+<ul class="navbar-nav ms-auto">
+    {{ nav_item('Logout', url_for('auth.logout')) }}
+</ul>
+{% endblock %}
+
+{% block main %}
+<section class="col-md-8 mx-auto">
+    <header>
+        <h1 id="history-heading">History</h1>
+    </header>
+
+    <p id="history-description">Here are your completed tasks, starting with the most recent.</p>
+
+    {% include "noscript.html.jinja" %}
+
+    <task-history></task-history>
+</section>
+{% endblock %}
+
+{% block bottom %}
+{% include "history/task-history.html.jinja" %}
+{% include "history/history-item.html.jinja" %}
+{% include "tasks/edit-task-modal.html.jinja" %}
+{% include "tasks/delete-task-modal.html.jinja" %}
+{% endblock %}
