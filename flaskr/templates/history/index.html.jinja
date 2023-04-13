@@ -17,6 +17,7 @@ History
 {% block nav %}
 <ul class="navbar-nav">
     {{ nav_item('History', url_for('tasks.history'), active=True) }}
+    {{ nav_item('Settings', url_for('settings.index')) }}
 </ul>
 
 <ul class="navbar-nav ms-auto">
@@ -28,9 +29,8 @@ History
 <section class="col-md-8 mx-auto">
     <header>
         <h1 id="history-heading">History</h1>
+        <p id="history-description">Here are your completed tasks, starting with the most recent.</p>
     </header>
-
-    <p id="history-description">Here are your completed tasks, starting with the most recent.</p>
 
     {% include "noscript.html.jinja" %}
 

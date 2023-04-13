@@ -7,9 +7,10 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <label for="description" class="form-label">Description</label>
-                    <input type="text" class="form-control" name="description" id="description" required>
-                    <div class="invalid-feedback">Description is required.</div>
+                    <label for="edit-description" class="form-label">Description</label>
+                    <input type="text" class="form-control" name="description" id="edit-description" required
+                        aria-describedby="invalid-feedback">
+                    <div class="invalid-feedback" id="invalid-feedback">Description is required.</div>
                 </div>
             </div>
             <div class="modal-footer">

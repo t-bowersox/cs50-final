@@ -1,11 +1,14 @@
 import functools
 from flask import (
-    abort, Blueprint, flash, g, redirect, render_template, request, session, url_for
+    abort, Blueprint, flash, g, jsonify, redirect, render_template, request, session, url_for
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from flaskr.db import get_db
+from datetime import datetime, timedelta
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+PW_CONFIRMATION_WINDOW_HOURS = 3
 
 
 @bp.route('/register', methods=['GET', 'POST'])
@@ -93,6 +96,26 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
+@bp.route('/confirm-password', methods=['GET', 'POST'])
+def confirm_password():
+    if request.method == 'POST':
+        password = request.form['password']
+        destination = request.form.get('destination', url_for('tasks.index'))
+        db = get_db()
+        user = db.execute('SELECT password FROM users WHERE id = ?', [
+                          session['user_id']]).fetchone()
+
+        if user and check_password_hash(user['password'], password):
+            session['confirmed_at'] = datetime.now().isoformat()
+            return redirect(destination)
+        else:
+            flash('password')
+            return redirect(request.referrer)
+
+    destination = request.args.get('destination', url_for('tasks.index'))
+    return render_template('auth/confirm-password.html.jinja', destination=destination)
+
+
 def login_required(view):
     """Route decorator that requires a user to be logged in."""
 
@@ -100,10 +123,31 @@ def login_required(view):
     def wrapped_view(**kwargs):
         if g.user is None:
             if request.is_json:
-                abort(401)
+                return jsonify(), 401
             else:
                 return redirect(url_for('auth.login'))
 
         return view(**kwargs)
+
+    return wrapped_view
+
+
+def password_required(view):
+    """Route decorator that requires a user to confirm their password."""
+
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        redirect_url = f"{url_for('auth.confirm_password')}?destination={request.path}"
+
+        if 'confirmed_at' not in session:
+            return redirect(redirect_url)
+
+        confirmed_at = datetime.fromisoformat(session['confirmed_at'])
+        delta = datetime.now() - confirmed_at
+
+        if delta > timedelta(hours=PW_CONFIRMATION_WINDOW_HOURS):
+            return redirect(redirect_url)
+        else:
+            return view(**kwargs)
 
     return wrapped_view

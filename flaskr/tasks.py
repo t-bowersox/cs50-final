@@ -30,7 +30,7 @@ def index():
 @auth.login_required
 def task(id=None):
     if request.method in ['GET', 'PUT', 'DELETE'] and id is None:
-        abort(422)
+        return jsonify(), 422
 
     db = get_db()
 
@@ -44,7 +44,7 @@ def task(id=None):
                 'INSERT INTO tasks (list_id, description) VALUES (?, ?)', [list_id, description])
             db.commit()
         except sqlite3.DatabaseError:
-            abort(500)
+            return jsonify(), 500
         else:
             return jsonify(cursor.lastrowid), 201
     elif request.method == 'PUT':
@@ -68,7 +68,7 @@ def task(id=None):
                 [description, completed, completed_on, updated_on, id])
             db.commit()
         except sqlite3.DatabaseError:
-            abort(500)
+            return jsonify(), 500
         else:
             return jsonify(cursor.rowcount)
     elif request.method == 'DELETE':
@@ -76,7 +76,7 @@ def task(id=None):
             cursor = db.execute('DELETE FROM tasks WHERE id = ?', [id])
             db.commit()
         except sqlite3.DatabaseError:
-            abort(500)
+            return jsonify(), 500
         else:
             return jsonify(cursor.rowcount)
     else:
@@ -85,7 +85,7 @@ def task(id=None):
                 'SELECT * FROM tasks WHERE id = ?', [id]).fetchone()
             return row_to_dict(row)
         except sqlite3.DatabaseError:
-            abort(500)
+            return jsonify(), 500
 
 
 @bp.get('/tasks')
@@ -101,9 +101,9 @@ def tasks():
         for row in rows:
             tasks.append(row_to_dict(row))
     except KeyError:
-        abort(400)
+        return jsonify(), 400
     except sqlite3.DatabaseError:
-        abort(500)
+        return jsonify(), 500
     else:
         return tasks
 
