@@ -58,7 +58,12 @@
     </main>
 
     <footer class="container-fluid p-3 border-top text-center">
-        <small>&copy; {{ current_year() }} Tim Bowersox.</small>
+        <div>
+            <small>&copy; {{ current_year() }} Tim Bowersox.</small>
+        </div>
+        <div>
+            <small><a href="https://github.com/t-bowersox/cs50-final">View source code on GitHub</a>.</small>
+        </div>
     </footer>
 
     {% block bottom %}{% endblock %}
