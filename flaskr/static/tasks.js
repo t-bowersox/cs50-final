@@ -353,8 +353,8 @@ export class TaskList extends HTMLElement {
         const deleteBtn = taskElement.querySelector('#delete-btn')
         deleteBtn.addEventListener('click', () => {
             /** @type {HTMLParagraphElement} */
-            const warning = this.#deleteTaskModal.querySelector('#warning');
-            warning.innerText = warning.innerText.replace('%description%', task.description);
+            const description = this.#deleteTaskModal.querySelector('#warning .description');
+            description.innerText = task.description;
 
             this.#deleteTaskListener = async (event) => {
                 event.preventDefault();

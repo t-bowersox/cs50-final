@@ -1,0 +1,97 @@
+{% extends "base.html.jinja" %}
+
+{% block title %}
+Settings
+{% endblock %}
+
+{% block nav %}
+<ul class="navbar-nav">
+    {{ nav_item('History', url_for('tasks.history')) }}
+    {{ nav_item('Settings', url_for('settings.index'), active=True) }}
+</ul>
+
+<ul class="navbar-nav ms-auto">
+    {{ nav_item('Logout', url_for('auth.logout')) }}
+</ul>
+{% endblock %}
+
+{% block main %}
+<section class="mx-auto col-md-8">
+    <header>
+        <h1>Settings</h1>
+    </header>
+
+    {% set errors = get_flashed_messages(category_filter=('error')) %}
+    {% set info = get_flashed_messages(category_filter=('info')) %}
+
+    <div class="my-3">
+        <h2>Change username</h2>
+        <form action="{{ url_for('settings.change_username') }}" method="post" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" name="username" id="username" value="{{ current_username }}" required
+                    class="form-control{% if 'username' in errors %} is-invalid{% elif 'username' in info %} is-valid{% endif %}"
+                    aria-describedby="username-invalid-feedback username-valid-feedback">
+                <div class="invalid-feedback" id="username-invalid-feedback">
+                    {% if 'username' in errors %}
+                    That username was unavailable, please try a different one.
+                    {% else %}
+                    Username is required.
+                    {% endif %}
+                </div>
+                <div class="valid-feedback" id="username-valid-feedback">
+                    {% if 'username' in info %}
+                    Username saved.
+                    {% endif %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+
+    <hr class="my-5">
+
+    <div class="my-3">
+        <h2>Change password</h2>
+        <form action="{{ url_for('settings.change_password') }}" method="post" novalidate>
+            <div class="mb-3">
+                <label for="current-password" class="form-label">Current password</label>
+                <input type="password" name="current-password" id="current-password" autocomplete="current-password"
+                    class="form-control{% if 'current-password' in errors %} is-invalid{% elif 'current-password' in info %} is-valid{% endif %}"
+                    required aria-describedby="current-password-invalid-feedback current-password-valid-feedback">
+                <div class="invalid-feedback" id="current-password-invalid-feedback">
+                    {% if 'current-password' in errors %}
+                    Current password is invalid, please try again.
+                    {% else %}
+                    Current password is required.
+                    {% endif %}
+                </div>
+                {% if 'current-password' in info %}
+                <div class="valid-feedback" id="current-password-valid-feedback">
+                    Password saved.
+                </div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="new-password" class="form-label">New password</label>
+                <input type="password" name="new-password" id="new-password"
+                    class="form-control{% if 'new-password' in errors %} is-invalid{% endif %}"
+                    autocomplete="new-password" minlength="8" required aria-describedby="password-invalid-feedback">
+                <div class="invalid-feedback" id="password-invalid-feedback">
+                    Password must be at least 8 characters.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="new-password-confirmation" class="form-label">Confirm new password</label>
+                <input type="password" name="new-password-confirmation" id="new-password-confirmation"
+                    class="form-control{% if 'new-password-confirmation' in errors %} is-invalid{% endif %}"
+                    autocomplete="new-password" required data-confirmation="new-password">
+                <div class="invalid-feedback">Passwords must match.</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</section>
+{% endblock%}
